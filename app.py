@@ -1,65 +1,90 @@
-import streamlit as st
-
-# 1. Sahifa sozlamalari
-st.set_page_config(page_title="IDROK AI", page_icon="🧠", layout="wide")
-
-# 2. Dizayn (CSS) - iPad ekraniga moslangan
-st.markdown("""
-    <style>
-    .main { background-color: #f0f2f6; }
-    .stButton>button { width: 100%; border-radius: 10px; height: 3em; background-color: #00B5AD; color: white; font-weight: bold; }
-    .test-container { background: white; padding: 20px; border-radius: 15px; border-left: 10px solid #00B5AD; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-    .sidebar-text { font-size: 18px; font-weight: bold; }
-    </style>
-    """, unsafe_allow_html=True)
-
-# 3. Savollar Bazasi
 data = {
     "Matematika": [
-        {"s": "48 va 72 sonlarining EBOBini toping.", "v": ["12", "24", "36", "48"], "j": "24", "t": "Bro, 48=24*2 va 72=24*3. Eng katta umumiy bo'luvchi 24!"},
-        {"s": "12 va 18 sonlarining EKUKini toping.", "v": ["36", "54", "72", "108"], "j": "36", "t": "12 va 18-ga bo'linadigan eng kichik son bu 36."},
-        {"s": "24 sonining nechta natural bo'luvchisi bor?", "v": ["6", "8", "10", "12"], "j": "8", "t": "24 = 2^3 * 3^1. Bo'luvchilar soni: (3+1)*(1+1) = 8 ta."},
-        {"s": "Tub sonni toping.", "v": ["1", "9", "15", "17"], "j": "17", "t": "17 faqat o'ziga va 1 ga bo'linadi."},
-        {"s": "Eng kichik juft tub son qaysi?", "v": ["0", "2", "4", "6"], "j": "2", "t": "2 - dunyodagi yagona juft tub son, bro!"}
+        {"s": "48 va 72 sonlarining EBOBini toping.", "v": ["12", "24", "36", "48"], "j": "24", "t": "48=24*2, 72=24*3. Eng katta bo'luvchisi 24."},
+        {"s": "12 va 18 sonlarining EKUKini toping.", "v": ["36", "54", "72", "108"], "j": "36", "t": "12 va 18 ga bo'linadigan eng kichik son 36."},
+        {"s": "24 sonining nechta natural bo'luvchisi bor?", "v": ["6", "8", "10", "12"], "j": "8", "t": "24 = 2^3 * 3^1. (3+1)*(1+1) = 8 ta."},
+        {"s": "Tub sonni toping.", "v": ["1", "9", "15", "17"], "j": "17", "t": "17 faqat 1 ga va o'ziga bo'linadi."},
+        {"s": "Eng kichik juft tub son qaysi?", "v": ["0", "2", "4", "6"], "j": "2", "t": "2 - yagona juft tub son, bro!"},
+        {"s": "100 ning 20% ini toping.", "v": ["10", "20", "25", "30"], "j": "20", "t": "100 * 0.20 = 20."},
+        {"s": "3^4 nechaga teng?", "v": ["12", "27", "81", "64"], "j": "81", "t": "3 * 3 * 3 * 3 = 81."},
+        {"s": "Kvadratning yuzi 64 bo'lsa, uning perimetri?", "v": ["24", "32", "40", "64"], "j": "32", "t": "Tomoni 8 bo'lsa, 8*4=32."},
+        {"s": "5! (faktorial) qiymatini toping.", "v": ["60", "100", "120", "150"], "j": "120", "t": "1*2*3*4*5 = 120."},
+        {"s": "Qaysi son 3 ga qoldiqsiz bo'linadi?", "v": ["124", "251", "331", "441"], "j": "441", "t": "4+4+1=9. Yig'indi 3 ga bo'linsa, son ham bo'linadi."},
+        {"s": "7 sonining kvadrati?", "v": ["14", "49", "21", "35"], "j": "49", "t": "7 * 7 = 49."},
+        {"s": "1 dan 10 gacha bo'lgan tub sonlar nechta?", "v": ["3", "4", "5", "6"], "j": "4", "t": "2, 3, 5, 7 - jami 4 ta."},
+        {"s": "Doiraning yuzi formulasi?", "v": ["2*pi*r", "pi*r^2", "a*b", "2*a+2*b"], "j": "pi*r^2", "t": "S = pi * r^2 - doira yuzi."},
+        {"s": "1 kg necha gramm?", "v": ["100", "500", "1000", "10000"], "j": "1000", "t": "1 kg = 1000 gr."},
+        {"s": "Uchburchak ichki burchaklari yig'indisi?", "v": ["90", "180", "270", "360"], "j": "180", "t": "Har qanday uchburchakda 180 gradus bo'ladi."},
+        {"s": "0.5 soni kasr ko'rinishida?", "v": ["1/2", "1/4", "1/5", "2/5"], "j": "1/2", "t": "0.5 yarim degani, ya'ni 1/2."},
+        {"s": "To'g'ri burchak necha gradus?", "v": ["45", "90", "180", "360"], "j": "90", "t": "To'g'ri burchak har doim 90 gradus."},
+        {"s": "15 ning 3 ga nisbati?", "v": ["3", "5", "10", "45"], "j": "5", "t": "15 / 3 = 5."},
+        {"s": "Eng kichik natural son?", "v": ["0", "1", "-1", "2"], "j": "1", "t": "Sanoq 1 dan boshlanadi."},
+        {"s": "Modul ichida -10 nima beradi?", "v": ["-10", "0", "10", "1"], "j": "10", "t": "Moduldan har doim musbat son chiqadi."}
     ],
     "Tibbiyot": [
-        {"s": "Inson tanasidagi eng kichik suyak qayerda?", "v": ["Burun", "Quloq", "Barmoq", "Tish"], "j": "Quloq", "t": "O'rta quloqdagi 'uzangi' suyagi eng kichigi hisoblanadi."},
-        {"s": "Qonning qaysi hujayralari kislorod tashiydi?", "v": ["Leykotsitlar", "Eritrotsitlar", "Trombotsitlar"], "j": "Eritrotsitlar", "t": "Bro, qizil qon tanachalari (eritrotsitlar) kislorod tashiydi."},
-        {"s": "Insulun gormoni qaysi organda ishlab chiqariladi?", "v": ["Jigar", "Oshqozon osti bezi", "Buyrak"], "j": "Oshqozon osti bezi", "t": "Qondagi shakarni aynan shu bez nazorat qiladi."}
+        {"s": "Inson tanasidagi eng kichik suyak?", "v": ["Burun", "Quloq", "Barmoq", "Tish"], "j": "Quloq", "t": "O'rta quloqdagi 'uzangi' suyagi eng kichigi."},
+        {"s": "Qonning qaysi hujayralari kislorod tashiydi?", "v": ["Leykotsitlar", "Eritrotsitlar", "Trombotsitlar"], "j": "Eritrotsitlar", "t": "Qizil qon tanachalari kislorod tashuvchidir."},
+        {"s": "Insonda necha juft xromosoma bor?", "v": ["22", "23", "44", "46"], "j": "23", "t": "Jami 46 ta, ya'ni 23 juft."},
+        {"s": "Gepatit qaysi organni zararlaydi?", "v": ["Yurak", "Jigar", "O'pka"], "j": "Jigar", "t": "Gepatit — jigar yallig'lanishi."},
+        {"s": "Vitamin C yetishmasligi kasalligi?", "v": ["Raxit", "Tsinga", "Anemiya"], "j": "Tsinga", "t": "Vitamin C bo'lmasa milklar qonaydi."},
+        {"s": "Neuralink qaysi yo'nalishga oid?", "v": ["Tibbiyot va IT", "Transport", "Qurilish"], "j": "Tibbiyot va IT", "t": "Miyani kompyuterga ulash texnologiyasi."},
+        {"s": "Yurak o'ng bo'lmasida qanday qon?", "v": ["Arterial", "Venoz", "Aralash"], "j": "Venoz", "t": "O'ng tomonga karbonat angidridga boy qon keladi."},
+        {"s": "Odam skletida nechta suyak bor?", "v": ["150", "206", "300"], "j": "206", "t": "Kattalarda 206 ta suyak mavjud."},
+        {"s": "Buyrakning vazifasi?", "v": ["Hazm", "Filtrlash", "Nafas"], "j": "Filtrlash", "t": "Buyrak qonni keraksiz moddalardan tozalaydi."},
+        {"s": "Gidrofobiya qaysi kasallik belgisi?", "v": ["Gripp", "Qutirish", "Vabo"], "j": "Qutirish", "t": "Suvdan qo'rqish qutirishda kuzatiladi."},
+        {"s": "Qaysi gormon shakarni nazorat qiladi?", "v": ["Adrenalin", "Insulin", "Tiroksin"], "j": "Insulin", "t": "Insulin yetishmasa qandli diabet kelib chiqadi."},
+        {"s": "Eng katta organ qaysi?", "v": ["Jigar", "O'pka", "Teri"], "j": "Teri", "t": "Insonning butun tanasini qoplagan teri eng katta organ."},
+        {"s": "A vitamini nima uchun foydali?", "v": ["Ko'rish", "Eshitish", "Hazm"], "j": "Ko'rish", "t": "A vitamini ko'z nurini saqlaydi."},
+        {"s": "Miya necha qismdan iborat?", "v": ["2", "3", "5"], "j": "5", "t": "Miya 5 ta asosiy bo'limdan tashkil topgan."},
+        {"s": "Anemiya nima yetishmasligidan keladi?", "v": ["Kalsiy", "Temir", "Magniy"], "j": "Temir", "t": "Qonda temir kamaysa kamqonlik (anemiya) bo'ladi."},
+        {"s": "Normal qon bosimi qancha?", "v": ["100/60", "120/80", "140/90"], "j": "120/80", "t": "Sog'lom odamda 120 ga 80 bo'ladi."},
+        {"s": "O'pka vazifasi?", "v": ["Qon haydash", "Gaz almashinuvi", "Hazm"], "j": "Gaz almashinuvi", "t": "Oksidlanish va nafas olish o'pkada bo'ladi."},
+        {"s": "Inson tanasida necha litr qon bor?", "v": ["3-4", "5-6", "8-9"], "j": "5-6", "t": "O'rtacha 5-6 litr qon aylanadi."},
+        {"s": "Eng qattiq to'qima qaysi?", "v": ["Suyak", "Tish emali", "Tog'ay"], "j": "Tish emali", "t": "Tishning ustki qatlami eng qattiq narsa."},
+        {"s": "Stetoskop nima uchun kerak?", "v": ["Bosim", "Eshitish", "Ko'rish"], "j": "Eshitish", "t": "Yurak va o'pka tovushlarini eshitish uchun."}
     ],
     "Ingliz tili": [
-        {"s": "She ___ to school every day.", "v": ["go", "goes", "going", "gone"], "j": "goes", "t": "Present Simple'da uchinchi shaxs (she) uchun -es qo'shiladi."},
-        {"s": "I am interested ___ IT.", "v": ["in", "on", "at", "for"], "j": "in", "t": "Interested fe'li har doim 'in' predlogi bilan keladi."}
+        {"s": "She ___ to school every day.", "v": ["go", "goes", "going"], "j": "goes", "t": "Present Simple, 3rd person singular needs -es."},
+        {"s": "I ___ reading a book now.", "v": ["is", "am", "are"], "j": "am", "t": "'I' always goes with 'am' in continuous."},
+        {"s": "Past simple of 'buy'?", "v": ["buyed", "bought", "buys"], "j": "bought", "t": "It's an irregular verb."},
+        {"s": "I am interested ___ IT.", "v": ["in", "on", "at"], "j": "in", "t": "Dependent preposition: interested in."},
+        {"s": "Which is an adjective?", "v": ["Run", "Beautiful", "Quickly"], "j": "Beautiful", "t": "It describes a person or thing."},
+        {"s": "The sun ___ in the East.", "v": ["rise", "rises", "rising"], "j": "rises", "t": "Universal truth in Present Simple."},
+        {"s": "Antonym of 'Big'?", "v": ["Large", "Small", "Huge"], "j": "Small", "t": "Big vs Small."},
+        {"s": "They ___ football tomorrow.", "v": ["will", "does", "are"], "j": "will", "t": "Future simple for tomorrow."},
+        {"s": "___ you like pizza?", "v": ["Does", "Do", "Are"], "j": "Do", "t": "Question for 'you' needs 'Do'."},
+        {"s": "He is the ___ student in class.", "v": ["good", "better", "best"], "j": "best", "t": "Superlative degree of 'good'."},
+        {"s": "I have ___ apple.", "v": ["a", "an", "the"], "j": "an", "t": "'Apple' starts with a vowel sound."},
+        {"s": "Apple, banana, cherry are ___.", "v": ["Vegetables", "Fruits", "Meat"], "j": "Fruits", "t": "Common fruit category."},
+        {"s": "Where ___ you from?", "v": ["is", "are", "am"], "j": "are", "t": "'You' needs 'are'."},
+        {"s": "I ___ a car last year.", "v": ["buy", "bought", "buying"], "j": "bought", "t": "'Last year' indicates past tense."},
+        {"s": "Can you ___ me, please?", "v": ["help", "helps", "helping"], "j": "help", "t": "After 'can' we use base verb."},
+        {"s": "We ___ students.", "v": ["is", "am", "are"], "j": "are", "t": "Plural 'we' takes 'are'."},
+        {"s": "My father is a ___.", "v": ["Doctor", "Beautiful", "Run"], "j": "Doctor", "t": "Profession is a noun."},
+        {"s": "I ___ breakfast at 8 AM.", "v": ["has", "have", "having"], "j": "have", "t": "I have, he has."},
+        {"s": "The book is ___ the table.", "v": ["in", "on", "under"], "j": "on", "t": "Surface location."},
+        {"s": "Speak ___ , please.", "v": ["slowly", "slow", "slowness"], "j": "slowly", "t": "Adverb describes the verb 'speak'."}
     ],
     "Rus tili": [
-        {"s": "Какого рода слово 'Книга'?", "v": ["Мужской", "Женский", "Средний"], "j": "Женский", "t": "-а bilan tugagan so'zlar asosan ayol jinsida bo'ladi."},
-        {"s": "Множественное число слова 'Друг'?", "v": ["Други", "Друзья", "Друзей"], "j": "Друзья", "t": "Bu so'zni yodlab olish kerak, do'stlar — друзья!"}
+        {"s": "Как тебя ___ ?", "v": ["зовут", "зовешь", "зовет"], "j": "зовут", "t": "Odamning ismini so'rash formasi."},
+        {"s": "Какого рода 'Книга'?", "v": ["Мужской", "Женский", "Средний"], "j": "Женский", "t": "-а bilan tugagan so'zlar asosan ayol jinsida."},
+        {"s": "Антоним 'Холодный'?", "v": ["Теплый", "Горячий", "Морозный"], "j": "Горячий", "t": "Sovuq va issiq qarama-qarshi."},
+        {"s": "Я ___ в школу.", "v": ["иду", "идешь", "идет"], "j": "иду", "t": "1-shaxs birlik uchun 'иду'."},
+        {"s": "Множественное 'Друг'?", "v": ["Друзья", "Други", "Друзей"], "j": "Друзья", "t": "Do'stlar — друзья."},
+        {"s": "Какое слово лишнее?", "v": ["Яблоко", "Груша", "Морковь"], "j": "Морковь", "t": "Meva emas, sabzavot."},
+        {"s": "Стол — это какой род?", "v": ["Мужской", "Женский", "Средний"], "j": "Мужской", "t": "Undosh bilan tugasa — erkak jinsi."},
+        {"s": "Как переводится 'Medicine'?", "v": ["Математика", "Медицина", "Музыка"], "j": "Медицина", "t": "Tibbiyot — медицина."},
+        {"s": "Синоним 'Красивый'?", "v": ["Прекрасный", "Ужасный", "Грубый"], "j": "Прекрасный", "t": "Chiroyli va ajoyib."},
+        {"s": "Окно — это какой род?", "v": ["Мужской", "Женский", "Средний"], "j": "Средний", "t": "-о bilan tugasa — o'rta jins."},
+        {"s": "Число 5 по-русски?", "v": ["Четыре", "Пять", "Шесть"], "j": "Пять", "t": "5 — пять."},
+        {"s": "Что ты ___ ?", "v": ["делаешь", "делаю", "делает"], "j": "делаешь", "t": "Siz nima qilyapsiz - что ты делаешь."},
+        {"s": "Большой дом (род)?", "v": ["Мужской", "Женский", "Средний"], "j": "Мужской", "t": "Дом — мужской род."},
+        {"s": "Вчера я ___ .", "v": ["читал", "читаю", "буду читать"], "j": "читал", "t": "Vchera — o'tgan zamon."},
+        {"s": "Цвет неба?", "v": ["Синий", "Красный", "Зеленый"], "j": "Синий", "t": "Osmon ko'k bo'ladi."},
+        {"s": "У меня есть ___ .", "v": ["собака", "собаку", "собаки"], "j": "собака", "t": "Nominative case after 'есть'."},
+        {"s": "Где ты ___ ?", "v": ["живешь", "живу", "живет"], "j": "живешь", "t": "Qayerda yashaysan - где ты живешь."},
+        {"s": "Сколько ___ время?", "v": ["сейчас", "сегодня", "завтра"], "j": "сейчас", "t": "Hozir soat necha - сколько сейчас время."},
+        {"s": "Доброе ___ !", "v": ["утро", "день", "вечер"], "j": "утро", "t": "Xayrli tong - доброе утро."},
+        {"s": "Мама ___ суп.", "v": ["варит", "варю", "варят"], "j": "варит", "t": "Ona (u) pishiryapti - варит."}
     ]
 }
-
-# 4. Sidebar va Statistika
-st.sidebar.title("🧠 IDROK AI")
-st.sidebar.markdown(f"**Foydalanuvchi:** {st.sidebar.text_input('Ismingiz:', 'Abdulaziz')}")
-if 'score' not in st.session_state: st.session_state.score = 0
-st.sidebar.metric("To'g'ri javoblar", st.session_state.score)
-
-# 5. Asosiy Bo'lim
-st.title("Bilimni shunchaki tekshirmang, uni anglang!")
-fan_tanlovi = st.selectbox("Fanni tanlang:", list(data.keys()))
-
-st.write(f"### {fan_tanlovi} yo'nalishi bo'yicha testlar")
-
-for i, item in enumerate(data[fan_tanlovi]):
-    with st.container():
-        st.markdown(f'<div class="test-container">', unsafe_allow_html=True)
-        st.write(f"**Savol {i+1}:** {item['s']}")
-        javob = st.radio("Variantlar:", item['v'], key=f"radio_{fan_tanlovi}_{i}")
-        
-        if st.button(f"Tekshirish {i+1}", key=f"btn_{fan_tanlovi}_{i}"):
-            if javob == item['j']:
-                st.success("To'g'ri! Barakalla.")
-                st.session_state.score += 1
-            else:
-                st.error(f"Xato! To'g'ri javob: {item['j']}")
-                st.info(f"💡 **IDROK AI Tushuntirishi:** {item['t']}")
-        st.markdown('</div>', unsafe_allow_html=True)
