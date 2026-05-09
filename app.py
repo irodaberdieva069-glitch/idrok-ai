@@ -1,129 +1,132 @@
 import streamlit as st
 
 # Sahifa sozlamalari
-st.set_page_config(page_title="IDROK AI", page_icon="🧠")
+st.set_page_config(
+    page_title="IDROK AI",
+    page_icon="🧠",
+    layout="wide"
+)
+
+# Zamonaviy dizayn uchun CSS
+st.markdown("""
+    <style>
+    .main { background-color: #0e1117; }
+    .stButton>button {
+        width: 100%;
+        border-radius: 8px;
+        height: 3em;
+        background-color: #2e7bcf;
+        color: white;
+        font-weight: bold;
+        border: none;
+        transition: 0.3s;
+    }
+    .stButton>button:hover {
+        background-color: #1e5ba0;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    .question-box {
+        background-color: #161b22;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        border-left: 5px solid #2e7bcf;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
 def main():
-    st.title("🧠 IDROK AI - Bilimlar platformasi")
-    
-    # Savollar bazasi
-    data = {
+    st.title("🧠 IDROK AI — Professional Test Platformasi")
+    st.markdown("---")
+
+    # Savollar bazasi (Har bir fanda 20 tadan, jami 80 ta)
+    database = {
         "IT": [
-            ["Dasturlashda 'Clean Code' kitobi muallifi?", "Robert Martin"],
-            ["Bitta CPU yadrosida bir vaqtda bir nechta oqim ishlashi?", "Multithreading"],
-            ["LIFO prinsipi asosida ishlaydigan ma'lumotlar strukturasi?", "Stack"],
-            ["IP manzillarni nomga o'zgartiruvchi xizmat?", "DNS"],
-            ["Python'da dekoratorlar qaysi belgi bilan boshlanadi?", "@"],
-            ["Git'da o'zgarishlarni vaqtincha saqlab turish?", "git stash"],
-            ["SaaS qisqartmasining ma'nosi?", "Software as a Service"],
-            ["'Big O' nima uchun ishlatiladi?", "Algoritm murakkabligini o'lchash"],
-            ["Relatsion bo'lmagan MB?", "MongoDB"],
-            ["VPN protokollaridan birini ayting?", "OpenVPN"],
-            ["Shifrlashning eng keng tarqalgan standarti?", "AES"],
-            ["Kubernetes qisqacha qanday yoziladi?", "K8s"],
-            ["Xing (Cross-site scripting) qisqartmasi?", "XSS"],
-            ["RAM va ROM orasidagi farq nima?", "RAM o'chuvchi xotira"],
-            ["Python'da 'list comprehension' nima beradi?", "Sintaktik qulaylik"],
-            ["Docker image-larni saqlash joyi?", "Docker Hub"],
-            ["Machine Learning'da 'Overfitting' nima?", "Modelning o'ta moslashishi"],
-            ["API test qilish uchun eng mashhur dastur?", "Postman"],
-            ["Linux yadro (kernel) muallifi?", "Linus Torvalds"],
-            ["Blockchain texnologiyasining asosi?", "Markazlashmagan reyestr"]
+            ["Python'da 'GIL' nima?", "Global Interpreter Lock"], ["O(n log n) murakkablikka ega saralash?", "Merge sort"],
+            ["HTTP 403 xatosi?", "Forbidden"], ["NoSQL bazaga misol?", "MongoDB"], ["Dasturlashda 'DRY' nima?", "Don't Repeat Yourself"],
+            ["Docker image-larni saqlash joyi?", "Docker Hub"], ["LIFO prinsipi qaysi strukturada?", "Stack"], ["DNS vazifasi?", "IPni nomga o'zgartirish"],
+            ["API'da 'idempotentlik' nima?", "Natija o'zgarmasligi"], ["Python'da __init__ nima?", "Konstruktor"], ["O'zgarmas (immutable) tur?", "Tuple"],
+            ["Linux'da huquq o'zgartirish?", "chmod"], ["Frontend asosi?", "HTML"], ["Git'da vaqtincha saqlash?", "stash"],
+            ["TCP va UDP farqi?", "Ulanishni tekshirish"], ["RAM nima?", "Tezkor xotira"], ["CPU miyasi?", "Yadro"],
+            ["K8s nima?", "Kubernetes"], ["Machine Learning'da 'Overfitting'?", "O'ta moslashish"], ["JS nima?", "Dasturlash tili"]
         ],
         "Matematika": [
-            ["EBOB(48, 72) nechaga teng?", "24"],
-            ["EKUK(12, 15, 20) nechaga teng?", "60"],
-            ["Logarifm 3 asosga ko'ra 81?", "4"],
-            ["Kvadrat tenglamaning diskriminant formulasi?", "D=b^2-4ac"],
-            ["Sonning 0-darajasi har doim nechaga teng?", "1"],
-            ["Uchburchakning yuzi (asos va balandlik orqali)?", "S=1/2*a*h"],
-            ["Birinchi 10 ta toq sonlar yig'indisi?", "100"],
-            ["Sinusoida funksiyasining davri?", "2pi"],
-            ["Sfera hajmi formulasi?", "4/3*pi*r^3"],
-            ["Vektorlarning skalyar ko'paytmasi natijasi?", "Son"],
-            ["Oltin kesim soni (F)?", "1.618"],
-            ["Arifmetik progressiya n-hadi?", "a1+(n-1)d"],
-            ["Matritsani teskari matritsaga ko'paytirsa nima chiqadi?", "Birlik matritsa"],
-            ["Integralda aniqmas integral belgisi ostidagi funksiya?", "Boshlang'ich funksiya"],
-            ["Ehtimollik: bitta tanga tashlanganda gerb tushishi?", "0.5"],
-            ["Natural sonlar to'plami qaysi harf bilan belgilanadi?", "N"],
-            ["Tangensning hosilasi?", "1/cos^2(x)"],
-            ["Pifagor sonlaridan biri (3, 4, ...)?", "5"],
-            ["Kombinatsiya formulasi (C n dan k)?", "n!/(k!(n-k)!)"],
-            ["Yevklid algoritmi nima uchun kerak?", "EBOBni topish"]
+            ["1 dan 100 gacha sonlar yig'indisi?", "5050"], ["Log 2 asosga ko'ra 1024?", "10"], ["Sinus 90 gradusda?", "1"],
+            ["Pifagor teoremasi?", "a^2+b^2=c^2"], ["Faktorial 5?", "120"], ["EBOB(48, 72)?", "24"], ["EKUK(12, 15)?", "60"],
+            ["Pi qiymati (2 ta raqam)?", "3.14"], ["Hosila nima?", "O'zgarish tezligi"], ["Integrallash nima?", "Yuza hisoblash"],
+            ["Oltin kesim nisbati?", "1.618"], ["Tub son bormi: 17?", "Ha"], ["2 ning 10-darajasi?", "1024"], ["Viyet teoremasi nimaga tegishli?", "Kvadrat tenglama"],
+            ["Kombinatsiya 3 dan 2?", "3"], ["Doira yuzi?", "pi*r^2"], ["1 t silsila ayirmasi?", "d"], ["Geometrik silsila maxraji?", "q"],
+            ["0 ga bo'lish?", "Aniqlanmagan"], ["Kvadrat ildiz 144?", "12"]
         ],
         "English": [
-            ["Opposite of 'Success'?", "Failure"],
-            ["Synonym of 'Precise'?", "Accurate"],
-            ["Past simple of 'Buy'?", "Bought"],
-            ["What is the plural of 'Sheep'?", "Sheep"],
-            ["Someone who speaks two languages?", "Bilingual"],
-            ["Meaning of the idiom 'Under the weather'?", "Feeling sick"],
-            ["Which modal verb expresses strong obligation?", "Must"],
-            ["The longest word in English dictionary (starts with P)?", "Pneumonoultramicroscopicsilicovolcanoconiosis"],
-            ["Suffix for 'Friend' to make an abstract noun?", "-ship"],
-            ["What part of speech is 'Quickly'?", "Adverb"],
-            ["Passive voice of 'She cleans the room'?", "The room is cleaned"],
-            ["What is a 'Synonym'?", "Same meaning word"],
-            ["Comparative form of 'Bad'?", "Worse"],
-            ["Superlative form of 'Far'?", "Farthest"],
-            ["Which country is 'Down Under'?", "Australia"],
-            ["What does 'CEO' stand for?", "Chief Executive Officer"],
-            ["Meaning of 'Break a leg'?", "Good luck"],
-            ["A person who hates spending money?", "Miser"],
-            ["Future perfect structure?", "Will have + V3"],
-            ["Who wrote 'Hamlet'?", "Shakespeare"]
+            ["Past Participle of 'Speak'?", "Spoken"], ["Antonym of 'Success'?", "Failure"], ["Synonym of 'Abundant'?", "Plentiful"],
+            ["'Go' 2-shakli?", "Went"], ["Plural of 'Criterion'?", "Criteria"], ["Meaning of 'Break a leg'?", "Good luck"],
+            ["Passive of 'He writes'?", "It is written"], ["Meaning of 'Under the weather'?", "Sick"], ["Antonym of 'Fragile'?", "Robust"],
+            ["Synonym of 'Precise'?", "Accurate"], ["Oxford Comma nima?", "Vergul"], ["Plural of 'Phenomenon'?", "Phenomena"],
+            ["Suffix for 'Friend'?", "-ship"], ["'Apple' tarjimasi?", "Olma"], ["Future Perfect?", "Will have + V3"],
+            ["Who wrote 'Hamlet'?", "Shakespeare"], ["Bilingual nima?", "Ikki tilli"], ["Opposite of 'Fast'?", "Slow"],
+            ["Synonym of 'Resilient'?", "Strong"], ["Gerund nima?", "V+ing"]
         ],
         "Rus tili": [
-            ["Антоним слова 'Правда'?", "Ложь"],
-            ["Синоним слова 'Трудный'?", "Сложный"],
-            ["Род слова 'Метро'?", "Средний"],
-            ["Вопрос Родительного падежа?", "Кого? Чего?"],
-            ["Сколько букв в русском алфавите?", "33"],
-            ["Как называется часть слова после корня?", "Суффикс"],
-            ["Главный член предложения, отвечающий на вопрос 'Что делать'?", "Сказуемое"],
-            ["К какому склонению относится слово 'Дерево'?", "2-е"],
-            ["Множественное число слова 'Ребенок'?", "Дети"],
-            ["Значение слова 'Уникальный'?", "Единственный"],
-            ["Правописание: 'ЖИ-ШИ' пишется с какой буквой?", "И"],
-            ["Как пишется: 'По-русски' или 'По русски'?", "По-русски"],
-            ["Синоним слова 'Огромный'?", "Колоссальный"],
-            ["Вопрос Творительного падежа?", "Кем? Чем?"],
-            ["Что такое 'Омонимы'?", "Слова, пишущиеся одинаково, но с разным значением"],
-            ["Антоним слова 'Смелый'?", "Трусливый"],
-            ["Часть речи, обозначающая признак предмета?", "Прилагательное"],
-            ["Как называется разговор двух лиц?", "Диалог"],
-            ["Местоимение 1-го лица единственного числа?", "Я"],
-            ["Что изучает Лексикология?", "Словарный состав языка"]
+            ["Что такое 'Подлежащее'?", "Ega"], ["Антоним 'Правда'?", "Ложь"], ["Сколько падежей?", "6"],
+            ["Синоним 'Красивый'?", "Прекрасный"], ["Что изучает 'Фонетика'?", "Звуки"], ["Род слова 'Метро'?", "Средний"],
+            ["Множественное 'Ребенок'?", "Дети"], ["Как пишется: 'Вкратце'?", "Вкратце"], ["Что такое 'Глагол'?", "Fe'l"],
+            ["Антоним 'Щедрый'?", "Жадный"], ["Значение 'Бить баклуши'?", "Бездельничать"], ["Род слова 'Время'?", "Средний"],
+            ["Вопрос Дательного падежа?", "Кому? Чему?"], ["Синоним 'Храбрый'?", "Смелый"], ["Часть речи 'Красиво'?", "Наречие"],
+            ["Сколько букв в алфавите?", "33"], ["Антоним 'Трудолюбивый'?", "Ленивый"], ["Что такое 'Морфология'?", "So'z turkumlari"],
+            ["Степени сравнения?", "2"], ["Вопрос Творительного падежа?", "Кем? Чем?"]
         ]
     }
 
-    # Fan tanlash
-    subject = st.sidebar.selectbox("Fanni tanlang:", list(data.keys()))
-    
-    st.subheader(f"Fan: {subject}")
-    
-    score = 0
-    with st.form(key='quiz_form'):
+    # Sidebar
+    with st.sidebar:
+        st.header("⚙️ Bo'limlar")
+        subject = st.selectbox("Fanni tanlang:", list(database.keys()))
+        st.write("---")
+        st.info("Har bir fan 20 ta professional savoldan iborat.")
+
+    # Main Layout
+    col1, col2 = st.columns([3, 1])
+
+    with col1:
+        st.subheader(f"📍 {subject} Yo'nalishi")
+        score = 0
         user_answers = []
-        for i, (q, a) in enumerate(data[subject], 1):
-            st.write(f"**{i}. {q}**")
-            ans = st.text_input(f"Javobingiz ({i})", key=f"q_{subject}_{i}")
-            user_answers.append((ans, a))
-        
-        submit = st.form_submit_button("Natijani ko'rish")
-        
-        if submit:
-            for user_ans, correct_ans in user_answers:
-                if user_ans.strip().lower() == correct_ans.lower():
-                    score += 1
+
+        # Form orqali savollarni chiqarish
+        with st.form(key='quiz_form'):
+            for i, (q, a) in enumerate(database[subject], 1):
+                st.markdown(f"<div class='question-box'><b>{i}. {q}</b></div>", unsafe_allow_html=True)
+                ans = st.text_input("Javobingizni yozing", key=f"q_{subject}_{i}", label_visibility="collapsed")
+                user_answers.append((ans, a))
+                st.write("")
+
+            submit = st.form_submit_button("Natijani ko'rish 🚀")
+
+            if submit:
+                for ua, ca in user_answers:
+                    if ua.strip().lower() == ca.lower():
+                        score += 1
+                
+                st.session_state.score = score
+                st.session_state.submitted = True
+
+    with col2:
+        st.markdown("### 📊 Natijalar")
+        if 'submitted' in st.session_state and st.session_state.submitted:
+            st.metric("To'g'ri javoblar", f"{st.session_state.score}/20")
+            percentage = (st.session_state.score / 20) * 100
+            st.write(f"Samaradorlik: **{percentage}%**")
             
-            st.success(f"Siz 20 tadan {score} ta to'g'ri topdingiz!")
-            st.progress(score / 20)
-            
-            if score >= 16:
+            if st.session_state.score >= 16:
                 st.balloons()
-                st.write("Dahosiz! 🏆")
+                st.success("Siz dahosiz! 🥇")
+            elif st.session_state.score >= 10:
+                st.warning("Yaxshi, lekin yana o'qish kerak! 📚")
+            else:
+                st.error("Ko'proq tayyorlaning! ⚠️")
+        else:
+            st.info("Testni yakunlang va natijani ko'ring.")
 
 if __name__ == "__main__":
     main()
